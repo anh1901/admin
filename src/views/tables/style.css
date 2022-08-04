@@ -1,0 +1,23 @@
+.bluebag {
+    opacity: 1;
+    animation: opacityOn 2s normal forwards;
+    animation-delay: 2s;
+}
+
+@keyframes opacityOn {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
