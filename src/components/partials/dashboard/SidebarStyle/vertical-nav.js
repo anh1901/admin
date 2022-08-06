@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
 
 const VerticalNav = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   //location
+  useEffect(() => {
+    if (
+      user_info === null ||
+      (user_info !== null && user_info.role.roleId === 1)
+    ) {
+      window.location.href = "/auth/sign-in";
+    }
+  });
   let location = useLocation();
   return (
     <>
@@ -28,7 +36,7 @@ const VerticalNav = () => {
             <span className="item-name">Bảng điều khiển</span>
           </Link>
         </li>
-        {user_info.role.roleId === 5 && (
+        {user_info && user_info.role.roleId === 5 && (
           <li className="nav-item">
             <Link
               className={`${
@@ -43,7 +51,7 @@ const VerticalNav = () => {
             </Link>
           </li>
         )}
-        {user_info.role.roleId === 4 && (
+        {user_info && user_info.role.roleId === 4 && (
           <li className="nav-item">
             <Link
               className={`${
@@ -58,37 +66,38 @@ const VerticalNav = () => {
             </Link>
           </li>
         )}
-        {(user_info.role.roleId === 4 || user_info.role.roleId === 5) && (
-          <>
-            <li className="nav-item">
-              <Link
-                className={`${
-                  location.pathname === "/category/root" ? "active" : ""
-                } nav-link `}
-                aria-current="page"
-                to="/admin/category/root"
-                onClick={() => {}}
-              >
-                <i className="fa fa-solid fa-tag"></i>
-                <span className="item-name">Quản lí danh mục gốc</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className={`${
-                  location.pathname === "/category/sub" ? "active" : ""
-                } nav-link `}
-                aria-current="page"
-                to="/admin/category/sub"
-                onClick={() => {}}
-              >
-                <i className="fa fa-solid fa-tags"></i>
-                <span className="item-name">Quản lí danh mục phụ</span>
-              </Link>
-            </li>
-          </>
-        )}
-        {user_info.role.roleId === 2 && (
+        {user_info &&
+          (user_info.role.roleId === 4 || user_info.role.roleId === 5) && (
+            <>
+              <li className="nav-item">
+                <Link
+                  className={`${
+                    location.pathname === "/category/root" ? "active" : ""
+                  } nav-link `}
+                  aria-current="page"
+                  to="/admin/category/root"
+                  onClick={() => {}}
+                >
+                  <i className="fa fa-solid fa-tag"></i>
+                  <span className="item-name">Quản lí danh mục gốc</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className={`${
+                    location.pathname === "/category/sub" ? "active" : ""
+                  } nav-link `}
+                  aria-current="page"
+                  to="/admin/category/sub"
+                  onClick={() => {}}
+                >
+                  <i className="fa fa-solid fa-tags"></i>
+                  <span className="item-name">Quản lí danh mục phụ</span>
+                </Link>
+              </li>
+            </>
+          )}
+        {user_info && user_info.role.roleId === 2 && (
           <>
             <li className="nav-item static-item">
               <Link
@@ -131,7 +140,7 @@ const VerticalNav = () => {
             </li>
           </>
         )}
-        {user_info.role.roleId === 3 && (
+        {user_info && user_info.role.roleId === 3 && (
           <>
             <li className="nav-item static-item">
               <Link
@@ -190,7 +199,7 @@ const VerticalNav = () => {
             </li>
           </>
         )}
-        {user_info.role.roleId === 4 && (
+        {user_info && user_info.role.roleId === 4 && (
           <>
             <li className="nav-item static-item">
               <Link

@@ -62,7 +62,7 @@ const SubHeader = (props) => {
           <Row>
             <Col md="12">
               <div className="d-flex justify-content-between flex-wrap">
-                <div>
+                <div style={{ padding: "2rem" }}>
                   <h2>Chào quản trị viên.</h2>
                   <p>Nhớ đăng xuất khi không dùng để bảo mật nha.</p>
                 </div>

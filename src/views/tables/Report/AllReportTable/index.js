@@ -110,6 +110,7 @@ const AllReportTable = () => {
           },
         ]}
         options={{
+          pageSize: 10,
           actionsColumnIndex: -1,
           exportButton: true,
           headerStyle: {

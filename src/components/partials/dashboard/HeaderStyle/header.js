@@ -79,7 +79,14 @@ const Header = (props) => {
   const minisidebar = () => {
     document.getElementsByTagName("ASIDE")[0].classList.toggle("sidebar-mini");
   };
-
+  useEffect(() => {
+    if (
+      user_info === null ||
+      (user_info !== null && user_info.role.roleId === 1)
+    ) {
+      window.location.href = "/auth/sign-in";
+    }
+  });
   return (
     <>
       <Navbar expand="lg" variant="light" className="nav iq-navbar">
@@ -429,10 +436,10 @@ const Header = (props) => {
                   />
                   <div className="caption ms-3 d-none d-md-block ">
                     <h6 className="mb-0 caption-title">
-                      {user_info.accountInfo.username}
+                      {user_info && user_info.accountInfo.username}
                     </h6>
                     <p className="mb-0 caption-sub-title">
-                      {user_info.role.roleName}
+                      {user_info && user_info.role.roleName}
                     </p>
                   </div>
                 </Dropdown.Toggle>
