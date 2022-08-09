@@ -15,6 +15,7 @@ import RootCategories from "../views/categories/root-category";
 import MyPost from "../views/posts/MyPost";
 import CreatePost from "../views/posts/CreatePost";
 import CreateReport from "../views/create-report";
+import ManagerTasks from "../views/manager-tasks";
 
 const DefaultRouter = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
@@ -46,6 +47,7 @@ const DefaultRouter = () => {
           <Route path="/admin/category/root" exact component={RootCategories} />
           <Route path="/admin/employees" exact component={Employees} />
           <Route path="/admin/task-boards" exact component={Boards} />
+          <Route path="/admin/tasks" exact component={ManagerTasks} />
           <Route path="/admin/posts" exact component={Posts} />
         </Switch>
       </CSSTransition>

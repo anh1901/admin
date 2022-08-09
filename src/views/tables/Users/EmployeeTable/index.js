@@ -35,7 +35,7 @@ const EmployeeTable = () => {
   const [idcard, setIdcard] = useState("");
   const [specialize, setSpecialize] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const loadUsers = async () => {
+  const loadUsers = async () => { 
     try {
       const params = {};
       const response = await UserApi.getAll(params);

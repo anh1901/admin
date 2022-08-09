@@ -14,7 +14,7 @@ import storage from "../../firebase/firebaseConfig";
 import "quill/dist/quill.snow.css";
 import reportApi from "../../api/reportApi";
 import { DatetimePickerTrigger } from "rc-datetime-picker";
-
+import { v4 as uuid } from "uuid";
 const CreateReport = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const [address, setAddress] = useState("");
@@ -190,7 +190,7 @@ const CreateReport = () => {
   useEffect(() => {
     if (img.length > imgNumber) {
       Array.from(img).map((img) => {
-        const storageRef = ref(storage, `/img/${img.name}`);
+        const storageRef = ref(storage, `/img/${uuid()}`);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
           "state_changed",
@@ -211,7 +211,7 @@ const CreateReport = () => {
     }
     if (video.length > videoNumber) {
       Array.from(video).map((video) => {
-        const storageRef = ref(storage, `/video/${video.name}`);
+        const storageRef = ref(storage, `/video/${uuid()}`);
         const uploadTask = uploadBytesResumable(storageRef, video);
         uploadTask.on(
           "state_changed",
@@ -436,7 +436,7 @@ const CreateReport = () => {
                   </Row>
                 )}
               </Row>
-              <Row className="pt-4 mb-4">
+              <Row className="pt-4">
                 <ReactQuill
                   value={text}
                   placeholder="Chi tiết báo cáo"

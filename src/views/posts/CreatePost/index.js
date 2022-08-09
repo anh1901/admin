@@ -10,7 +10,7 @@ import { Markup } from "interweave";
 import postApi from "../../../api/postApi";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import storage from "../../../firebase/firebaseConfig";
-
+import { v4 as uuid } from "uuid";
 const CreatePost = () => {
   const [show, AccountShow] = useState("Info");
   const [title, setTitle] = useState("");
@@ -77,7 +77,7 @@ const CreatePost = () => {
   };
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const handleSubmit = async () => {
-    const storageRef = ref(storage, `/img/${img.name}`);
+    const storageRef = ref(storage, `/img/${uuid()}`);
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
@@ -344,16 +344,7 @@ const CreatePost = () => {
                           modules={modules}
                           style={{
                             height: "25rem",
-                            marginBottom:
-                              window.innerWidth < 505
-                                ? "7rem"
-                                : 505 < window.innerWidth &&
-                                  window.innerWidth < 650
-                                ? "6rem"
-                                : 650 < window.innerWidth &&
-                                  window.innerWidth < 1250
-                                ? "25rem"
-                                : "25rem",
+                            marginBottom: "3rem",
                           }}
                         />
                       </Row>

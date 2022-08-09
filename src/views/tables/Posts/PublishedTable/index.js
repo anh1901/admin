@@ -5,6 +5,7 @@ import postApi from "../../../../api/postApi";
 import moment from "moment";
 import { Markup } from "interweave";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const PublishedPostTable = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
@@ -31,21 +32,32 @@ const PublishedPostTable = () => {
             .reverse()
         );
       } else if (user_info !== null && user_info.role.roleId === 4) {
-        const response = await postApi.getByIdAndStatus(params2);
+        const response = await postApi.getByStatus(params2);
         setPosts(
           response
             .sort((a, b) => new moment(a.createTime) - new moment(b.createTime))
             .reverse()
         );
       }
-      const response = await postApi.getByIdAndStatus(params);
-      setPosts(
-        response
-          .sort((a, b) => new moment(a.createTime) - new moment(b.createTime))
-          .reverse()
-      );
     } catch (err) {
       alert(err.message);
+    }
+  };
+  const unpublicPost = async (id) => {
+    setShow(false);
+    try {
+      const params = {
+        postId: id,
+        status: 2,
+      };
+      console.log(params);
+      const response = await postApi.editStatus(params);
+      if (!JSON.stringify(response).includes("error")) {
+        toast.success("Gỡ bài thành công");
+        loadPost();
+      }
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   useEffect(() => {
@@ -214,7 +226,10 @@ const PublishedPostTable = () => {
             Đóng
           </Button>
           {user_info.role.roleId === 4 && (
-            <Button variant="warning" onClick={() => {}}>
+            <Button
+              variant="warning"
+              onClick={() => unpublicPost(selectedPost.postId)}
+            >
               Gỡ bài viết
             </Button>
           )}

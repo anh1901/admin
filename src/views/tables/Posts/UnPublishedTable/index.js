@@ -5,6 +5,7 @@ import postApi from "../../../../api/postApi";
 import moment from "moment";
 import { Markup } from "interweave";
 import { Button, Col, Container, Image, Modal, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const UnpublishedPostTable = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
@@ -32,21 +33,33 @@ const UnpublishedPostTable = () => {
             .reverse()
         );
       } else if (user_info !== null && user_info.role.roleId === 4) {
-        const response = await postApi.getByIdAndStatus(params2);
+        console.log("User");
+        const response = await postApi.getByStatus(params2);
         setPosts(
           response
             .sort((a, b) => new moment(a.createTime) - new moment(b.createTime))
             .reverse()
         );
       }
-      const response = await postApi.getByIdAndStatus(params);
-      setPosts(
-        response
-          .sort((a, b) => new moment(a.createTime) - new moment(b.createTime))
-          .reverse()
-      );
     } catch (err) {
       alert(err.message);
+    }
+  };
+  const publicPost = async (id) => {
+    setShow(false);
+    setPreview(false);
+    try {
+      const params = {
+        postId: id,
+        status: 3,
+      };
+      const response = await postApi.editStatus(params);
+      if (!JSON.stringify(response).includes("error")) {
+        toast.success("Đăng bài thành công");
+        loadPost();
+      }
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   useEffect(() => {
@@ -223,7 +236,10 @@ const UnpublishedPostTable = () => {
             Đóng
           </Button>
           {user_info.role.roleId === 4 && (
-            <Button variant="warning" onClick={() => {}}>
+            <Button
+              variant="warning"
+              onClick={() => publicPost(selectedPost.postId)}
+            >
               Đăng bài
             </Button>
           )}
@@ -328,6 +344,14 @@ const UnpublishedPostTable = () => {
           <Button variant="secondary" onClick={handleClosePreview}>
             Đóng
           </Button>
+          {user_info.role.roleId === 4 && (
+            <Button
+              variant="warning"
+              onClick={() => publicPost(selectedPost.postId)}
+            >
+              Đăng bài
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
       <MaterialTable
