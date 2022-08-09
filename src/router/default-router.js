@@ -14,6 +14,7 @@ import SubCategories from "../views/categories/sub-category";
 import RootCategories from "../views/categories/root-category";
 import MyPost from "../views/posts/MyPost";
 import CreatePost from "../views/posts/CreatePost";
+import CreateReport from "../views/create-report";
 
 const DefaultRouter = () => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
@@ -34,7 +35,7 @@ const DefaultRouter = () => {
           {/* Admin */}
           <Route path="/admin/users" exact component={Users} />
           {/* staff */}
-          <Route path="/admin/create-report" exact component={Reports} />
+          <Route path="/admin/create-report" exact component={CreateReport} />
           <Route path="/admin/reports" exact component={Reports} />
           {/*Editor */}
           <Route path="/admin/my-tasks" exact component={Tasks} />

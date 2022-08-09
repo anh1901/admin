@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import Store from "./store";
 import "react-toastify/dist/ReactToastify.css";
 import "@fortawesome/fontawesome-free/css/all.css";
+import "rc-datetime-picker/dist/picker.min.css";
+import "rc-datetime-picker/dist/picker.css";
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter basename={process.env.PUBLIC_URL}>

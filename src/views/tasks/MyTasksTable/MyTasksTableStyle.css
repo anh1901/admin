@@ -1,0 +1,9 @@
+.done-task:hover {
+    cursor: pointer;
+    transition: 0.9s;
+    transform: rotateZ(360deg);
+}
+.hover:hover{
+    cursor: pointer;
+    font-weight: bold;
+}

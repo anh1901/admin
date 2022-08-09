@@ -439,7 +439,10 @@ const Header = (props) => {
                       {user_info && user_info.accountInfo.username}
                     </h6>
                     <p className="mb-0 caption-sub-title">
-                      {user_info && user_info.role.roleName}
+                      {user_info.role.roleId === 2 && "Nhân viên"}
+                      {user_info.role.roleId === 3 && "Biên tập viên"}
+                      {user_info.role.roleId === 4 && "Quản lý biên tập viên"}
+                      {user_info.role.roleId === 5 && "Quản trị viên"}
                     </p>
                   </div>
                 </Dropdown.Toggle>

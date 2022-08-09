@@ -41,11 +41,6 @@ const RootCategoryTable = () => {
             onClick: (event) => alert("Tạo danh mục gốc"),
           },
           {
-            icon: "visibility",
-            tooltip: "Xem chi tiết danh mục gốc",
-            onClick: (event) => alert("Xem chi tiết"),
-          },
-          {
             icon: "edit",
             tooltip: "Sửa danh mục gốc",
             onClick: (event) => alert("Sửa"),
@@ -65,8 +60,3 @@ const RootCategoryTable = () => {
 };
 
 export default RootCategoryTable;
-
-// cellStyle: {
-//             backgroundColor: '#039be5',
-//             color: '#FFF'
-//           },

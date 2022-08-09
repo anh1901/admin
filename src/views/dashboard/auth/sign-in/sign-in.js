@@ -1,14 +1,11 @@
-import React, { useState } from "react";
-import { Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Card from "../../../../components/Card";
+import React from "react";
+import { Button } from "react-bootstrap";
+
 import { useFormik } from "formik";
 import loginApi from "../../../../api/loginApi";
 import { toast } from "react-toastify";
 import "./sign-in-style.css";
-
 const SignIn = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const validate = (values) => {
     const errors = {};
     if (!values.password) {
@@ -45,7 +42,6 @@ const SignIn = () => {
 
   async function user_login(values) {
     console.log("Login");
-    setIsLoading(true);
     try {
       const json = JSON.stringify({
         account: values.account,
@@ -60,11 +56,10 @@ const SignIn = () => {
         toast.warning("Tài khoản này không có quyền vào hệ thống");
       } else if (!JSON.stringify(response).includes("error")) {
         localStorage.setItem("user_info", JSON.stringify(response));
-        window.location.href = "/admin";
+        window.location.href = "/admin/dashboard";
       } else if (JSON.stringify(response).includes("error")) {
         toast.error("Thông tin đăng nhập không chính xác hãy kiểm tra lại.");
       }
-      setIsLoading(false);
     } catch (e) {
       toast.error(e.message);
     }
