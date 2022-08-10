@@ -65,31 +65,39 @@ const SubHeader = (props) => {
               <div className="d-flex justify-content-between flex-wrap">
                 <div style={{ padding: "2rem" }}>
                   <h2>
-                    Chào, {user_info.role.roleId === 2 && "nhân viên"}
-                    {user_info.role.roleId === 3 && "biên tập viên"}
-                    {user_info.role.roleId === 4 && "quản lý biên tập viên"}
-                    {user_info.role.roleId === 5 && "quản trị viên"}.
+                    Chào,{" "}
+                    {user_info && user_info.role.roleId === 2 && "nhân viên"}
+                    {user_info &&
+                      user_info.role.roleId === 3 &&
+                      "biên tập viên"}
+                    {user_info &&
+                      user_info.role.roleId === 4 &&
+                      "quản lý biên tập viên"}
+                    {user_info &&
+                      user_info.role.roleId === 5 &&
+                      "quản trị viên"}
+                    .
                   </h2>
-                  {user_info.role.roleId === 2 && (
+                  {user_info && user_info.role.roleId === 2 && (
                     <p>
                       Nhân viên có thể tạo báo cáo và xử lí các báo cáo được gửi
                       tới từ người dân.
                     </p>
                   )}
-                  {user_info.role.roleId === 3 && (
+                  {user_info && user_info.role.roleId === 3 && (
                     <p>
                       Biên tập viên có thể xem công việc được phân công, viết
                       bài và xem các bài viết của bản thân.
                     </p>
                   )}
-                  {user_info.role.roleId === 4 && (
+                  {user_info && user_info.role.roleId === 4 && (
                     <p>
                       Quản lý biên tập viên có thể quản lí các biên tập viên,
                       danh mục, phân công việc, quan sát tiến độ làm việc và
                       đăng / gỡ bài viết.
                     </p>
                   )}
-                  {user_info.role.roleId === 5 && (
+                  {user_info && user_info.role.roleId === 5 && (
                     <p>Quản trị viên có thể quản lí người dùng.</p>
                   )}
                 </div>
