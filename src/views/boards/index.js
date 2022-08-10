@@ -54,8 +54,9 @@ const Boards = () => {
         <Card className="rounded" style={{ height: "70vh" }}>
           <Card.Body className="">
             <div>
-              <div className="mb-3 font-weight-bold h4">
-                <i className="fa fa-light fa-star mr-2" /> Tất cả bảng công việc
+              <div className="mb-3 font-weight-bold h5">
+                <i className="fa fa-light fa-star mr-2" />
+                Tất cả bảng công việc
                 {"  "}
                 <OverlayTrigger
                   trigger={["click"]}
@@ -158,7 +159,6 @@ const Boards = () => {
                   </div>
                 </div>
               )}
-
               <BoardModal
                 action={addBoard}
                 closeModal={() => setModalVisible(!modalVisible)}

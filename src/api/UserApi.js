@@ -5,9 +5,8 @@ class UserApi {
     const url = "/Account";
     return axiosClient.get(url, params);
   };
-  getByEmail = (params) => {
-    console.log(params.email);
-    const url = "/Account/GetAccount?email=" + params.email;
+  getById = (params) => {
+    const url = "/Account/GetAccount?UserId=" + params.id;
     return axiosClient.get(url);
   };
   update = (params) => {

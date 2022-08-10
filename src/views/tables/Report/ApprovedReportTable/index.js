@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import MaterialTable from "material-table";
 import React, { useEffect, useState } from "react";
 import { Markup } from "interweave";
@@ -6,9 +7,10 @@ import reportApi from "../../../../api/reportApi";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const ApprovedReportTable = () => {
+const ApprovedReportTable = ({ setReportSelectedList }) => {
   const user_info = JSON.parse(localStorage.getItem("user_info"));
   const [reports, setReports] = useState([]);
+  const [_reports, _setReports] = useState([]);
   const [show, setShow] = useState(false);
   const [showImg, setShowImg] = useState(false);
   const [selectedImg, setSelectedImg] = useState();
@@ -18,10 +20,19 @@ const ApprovedReportTable = () => {
     try {
       const params = { status: 3 };
       const response = await reportApi.getByStatus(params);
-      setReports(
-        response
-          .sort((a, b) => new moment(a.createTime) - new moment(b.createTime))
-          .reverse()
+      _setReports(
+        user_info.role.roleId === 4
+          ? response
+              .filter((e) => e.editorId === null)
+              .sort(
+                (a, b) => new moment(a.createTime) - new moment(b.createTime)
+              )
+              .reverse()
+          : response
+              .sort(
+                (a, b) => new moment(a.createTime) - new moment(b.createTime)
+              )
+              .reverse()
       );
     } catch (err) {
       alert(err.message);
@@ -34,6 +45,9 @@ const ApprovedReportTable = () => {
   }, []);
   useEffect(() => {
     loadReports();
+    if (_reports.length !== reports.length || temp === 0) {
+      setReports(_reports);
+    }
   }, [temp]);
   const columns = [
     {
@@ -284,7 +298,11 @@ const ApprovedReportTable = () => {
       <MaterialTable
         columns={columns}
         data={reports}
-        title="Tất cả báo cáo được duyệt"
+        title={
+          user_info.role.roleId === 4
+            ? "Chọn báo cáo"
+            : "Tất cả báo cáo được duyệt"
+        }
         actions={[
           {
             icon: "add",
@@ -299,21 +317,19 @@ const ApprovedReportTable = () => {
           },
         ]}
         options={{
-          actionsColumnIndex: -1,
+          selection: true,
           exportButton: true,
           headerStyle: {
             backgroundColor: "#1669f0",
             color: "#FFF",
           },
         }}
+        onSelectionChange={(rows) =>
+          setReportSelectedList(rows.map((row) => row.reportId))
+        }
       />
     </div>
   );
 };
 
 export default ApprovedReportTable;
-
-// cellStyle: {
-//             backgroundColor: '#039be5',
-//             color: '#FFF'
-//           },

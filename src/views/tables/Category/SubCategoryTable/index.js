@@ -19,7 +19,7 @@ const SubCategoryTable = () => {
   const [isTypeUpdate, setIsTypeUpdate] = useState(false);
   const [temp, setTemp] = useState(0);
   const [subCategoryType, setSubCategoryType] = useState("");
-  const [rootCategoryType, setRootCategoryType] = useState("");
+  // const [rootCategoryType, setRootCategoryType] = useState("");
   const [selected, setSelected] = useState();
   const loadSubCategory = async () => {
     try {
@@ -218,13 +218,7 @@ const SubCategoryTable = () => {
         </Modal.Footer>
       </Modal>
       {/* Tạo  */}
-      <Modal
-        scrollable={true}
-        show={show2}
-        onHide={handleClose2}
-        centered
-        size="lg"
-      >
+      <Modal show={show2} onHide={handleClose2} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Tạo danh mục</Modal.Title>
         </Modal.Header>

@@ -44,6 +44,7 @@ import { toast } from "react-toastify";
 import reportApi from "../../api/reportApi.js";
 import taskApi from "../../api/TaskApi.js";
 import postApi from "../../api/postApi.js";
+import userApi from "../../api/UserApi.js";
 
 // install Swiper modules
 SwiperCore.use([Navigation]);
@@ -213,9 +214,33 @@ const Index = (props) => {
       },
     ],
   };
+  const chart2 = {
+    options: {
+      colors: [props.colorprimarymode, "#fc1303"],
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 10,
+            size: "50%",
+          },
+          track: {
+            margin: 10,
+            strokeWidth: "50%",
+          },
+          dataLabels: {
+            show: true,
+          },
+        },
+      },
+      labels: ["Đã hoàn thành", "Chưa hoàn thành"],
+    },
+    series: [55, 75],
+  };
   const [reports, setReports] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [editors, setEditors] = useState([]);
   const [temp, setTemp] = useState(0);
   const loadReports = async () => {
     try {
@@ -244,11 +269,30 @@ const Index = (props) => {
     }, 5000);
   }, []);
   useEffect(() => {
-    console.log(reports);
     loadReports();
     loadAllTasks();
     loadPost();
+    loadManagerTasks();
+    loadUsers();
   }, [temp]);
+  const loadUsers = async () => {
+    try {
+      const params = {};
+      const response = await userApi.getAll(params);
+      setEditors(response.filter((user) => user.role.roleId === 3));
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+  const loadManagerTasks = async () => {
+    try {
+      const param = {};
+      const response = await taskApi.getAllManager(param);
+      setAllTasks(response);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
   const loadAllTasks = async () => {
     try {
       const params = {
@@ -1040,7 +1084,395 @@ const Index = (props) => {
           </Col>
         </Row>
       )}
-      {user_info.role.roleId === 4 && <Row>Thống kê</Row>}
+      {user_info.role.roleId === 4 && (
+        <Row>
+          <Row>
+            <Col md="12" lg="12">
+              <Row className="row-cols-1">
+                <div className="overflow-hidden d-slider1 ">
+                  <Swiper
+                    className="p-0 m-0 mb-2 list-inline "
+                    slidesPerView={6}
+                    spaceBetween={32}
+                    navigation={{
+                      nextEl: ".swiper-button-next",
+                      prevEl: ".swiper-button-prev",
+                    }}
+                    breakpoints={{
+                      320: { slidesPerView: 1 },
+                      550: { slidesPerView: 2 },
+                      991: { slidesPerView: 3 },
+                      1400: { slidesPerView: 4 },
+                      1500: { slidesPerView: 5 },
+                      1920: { slidesPerView: 6 },
+                      2040: { slidesPerView: 7 },
+                      2440: { slidesPerView: 8 },
+                    }}
+                    data-aos="fade-up"
+                    data-aos-delay="700"
+                  >
+                    <SwiperSlide className="card card-slide">
+                      <div className="card-body">
+                        <div className="progress-widget">
+                          <Circularprogressbar
+                            stroke={props.colorprimarymode}
+                            width="60px"
+                            height="60px"
+                            Linecap="rounded"
+                            trailstroke="#ddd"
+                            strokewidth="4px"
+                            style={{ width: 60, height: 60 }}
+                            value={100}
+                            id="circle-progress-01"
+                          >
+                            100%
+                          </Circularprogressbar>
+                          <div className="progress-detail">
+                            <p className="mb-2">Tất cả công việc</p>
+                            <h4 className="counter">
+                              <CountUp
+                                start={0}
+                                end={allTasks.length}
+                                duration={3}
+                              />
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                    <SwiperSlide className=" card card-slide">
+                      <div className="card-body">
+                        <div className="progress-widget">
+                          <Circularprogressbar
+                            stroke={props.cololrinfomode}
+                            width="60px"
+                            height="60px"
+                            trailstroke="#ddd"
+                            strokewidth="4px"
+                            Linecap="rounded"
+                            style={{ width: 60, height: 60 }}
+                            value={
+                              (allTasks.filter((e) => e.status === "New")
+                                .length /
+                                allTasks.length) *
+                              100
+                            }
+                            id="circle-progress-02"
+                          >
+                            {Math.round(
+                              (allTasks.filter((e) => e.status === "New")
+                                .length /
+                                allTasks.length) *
+                                100
+                            )}
+                            %
+                          </Circularprogressbar>
+                          <div className="progress-detail">
+                            <p className="mb-2">Công việc mới</p>
+                            <h4 className="counter">
+                              <CountUp
+                                start={0}
+                                end={
+                                  allTasks.filter((e) => e.status === "New")
+                                    .length
+                                }
+                                duration={3}
+                              />
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                    <SwiperSlide className=" card card-slide">
+                      <div className="card-body">
+                        <div className="progress-widget">
+                          <Circularprogressbar
+                            stroke={props.colorprimarymode}
+                            width="60px"
+                            height="60px"
+                            trailstroke="#ddd"
+                            strokewidth="4px"
+                            Linecap="rounded"
+                            style={{ width: 60, height: 60 }}
+                            value={
+                              (allTasks.filter((e) => e.status === "Pending")
+                                .length /
+                                allTasks.length) *
+                              100
+                            }
+                            id="circle-progress-03"
+                          >
+                            {Math.round(
+                              (allTasks.filter((e) => e.status === "Pending")
+                                .length /
+                                allTasks.length) *
+                                100
+                            )}
+                            %
+                          </Circularprogressbar>
+                          <div className="progress-detail">
+                            <p className="mb-2">Đang làm</p>
+                            <h4 className="counter">
+                              <CountUp
+                                start={0}
+                                end={
+                                  allTasks.filter((e) => e.status === "Pending")
+                                    .length
+                                }
+                                duration={3}
+                              />
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                    <SwiperSlide className=" card card-slide">
+                      <div className="card-body">
+                        <div className="progress-widget">
+                          <Circularprogressbar
+                            stroke={props.cololrinfomode}
+                            width="60px"
+                            height="60px"
+                            trailstroke="#ddd"
+                            strokewidth="4px"
+                            Linecap="rounded"
+                            style={{ width: 60, height: 60 }}
+                            value={
+                              (allTasks.filter((e) => e.status === "Review")
+                                .length /
+                                allTasks.length) *
+                              100
+                            }
+                            id="circle-progress-04"
+                          >
+                            {Math.round(
+                              (allTasks.filter((e) => e.status === "Review")
+                                .length /
+                                allTasks.length) *
+                                100
+                            )}
+                            %
+                          </Circularprogressbar>
+                          <div className="progress-detail">
+                            <p className="mb-2">Đang xem xét</p>
+                            <h4 className="counter">
+                              <CountUp
+                                start={0}
+                                end={
+                                  allTasks.filter((e) => e.status === "Review")
+                                    .length
+                                }
+                                duration={3}
+                              />
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                    <SwiperSlide className=" card card-slide">
+                      <div className="card-body">
+                        <div className="progress-widget">
+                          <Circularprogressbar
+                            stroke="green"
+                            width="60px"
+                            height="60px"
+                            trailstroke="#ddd"
+                            strokewidth="4px"
+                            Linecap="rounded"
+                            style={{ width: 60, height: 60 }}
+                            value={
+                              (allTasks.filter((e) => e.status === "Finish")
+                                .length /
+                                allTasks.length) *
+                              100
+                            }
+                            id="circle-progress-05"
+                          >
+                            {Math.round(
+                              (allTasks.filter((e) => e.status === "Finish")
+                                .length /
+                                allTasks.length) *
+                                100
+                            )}
+                            %
+                          </Circularprogressbar>
+                          <div className="progress-detail">
+                            <p className="mb-2">Đã hoàn thành</p>
+                            <h4 className="counter">
+                              <CountUp
+                                start={0}
+                                end={
+                                  allTasks.filter((e) => e.status === "Finish")
+                                    .length
+                                }
+                                duration={3}
+                              />
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                    <SwiperSlide className=" card card-slide">
+                      <div className="card-body">
+                        <div className="progress-widget">
+                          <Circularprogressbar
+                            stroke="red"
+                            width="60px"
+                            height="60px"
+                            trailstroke="#ddd"
+                            strokewidth="4px"
+                            Linecap="rounded"
+                            style={{ width: 60, height: 60 }}
+                            value={
+                              (allTasks.filter((e) => e.status === "UnFinished")
+                                .length /
+                                allTasks.length) *
+                              100
+                            }
+                            id="circle-progress-05"
+                          >
+                            {Math.round(
+                              (allTasks.filter((e) => e.status === "UnFinished")
+                                .length /
+                                allTasks.length) *
+                                100
+                            )}
+                            %
+                          </Circularprogressbar>
+                          <div className="progress-detail">
+                            <p className="mb-2">Không hoàn thành</p>
+                            <h4 className="counter">
+                              <CountUp
+                                start={0}
+                                end={
+                                  allTasks.filter(
+                                    (e) => e.status === "UnFinished"
+                                  ).length
+                                }
+                                duration={3}
+                              />
+                            </h4>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                    <div className="swiper-button swiper-button-next"></div>
+                    <div className="swiper-button swiper-button-prev"></div>
+                  </Swiper>
+                </div>
+              </Row>
+            </Col>
+            {editors.map((editor) => (
+              <Col md="12" xl="6">
+                <div className="card" data-aos="fade-up" data-aos-delay="900">
+                  <div className="flex-wrap card-header d-flex justify-content-between">
+                    <div className="header-title">
+                      <h4 className="card-title">
+                        {editor.accountInfo.username}
+                      </h4>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <div className="flex-wrap d-flex align-items-center justify-content-between">
+                      <Chart
+                        className="col-md-8 col-lg-8"
+                        options={chart2.options}
+                        series={[
+                          Math.round(
+                            (allTasks.filter(
+                              (task) =>
+                                task.editorId === editor.accountId &&
+                                task.status === "Finish"
+                            ).length /
+                              allTasks.filter(
+                                (task) => task.editorId === editor.accountId
+                              ).length) *
+                              100
+                          ),
+                          Math.round(
+                            (allTasks.filter(
+                              (task) =>
+                                task.editorId === editor.accountId &&
+                                task.status === "UnFinished"
+                            ).length /
+                              allTasks.filter(
+                                (task) => task.editorId === editor.accountId
+                              ).length) *
+                              100
+                          ),
+                        ]}
+                        type="radialBar"
+                        height="250"
+                      />
+                      <div className="d-grid gap col-md-4 col-lg-4">
+                        <div className="d-flex align-items-start">
+                          <svg
+                            className="mt-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            viewBox="0 0 24 24"
+                            fill="#3a57e8"
+                          >
+                            <g>
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                                fill="#3a57e8"
+                              ></circle>
+                            </g>
+                          </svg>
+                          <div className="ms-3">
+                            <span className="text-secondary">
+                              Công việc đã hoàn thành
+                            </span>
+                            <h6>
+                              {
+                                allTasks.filter(
+                                  (task) =>
+                                    task.editorId === editor.accountId &&
+                                    task.status === "Finish"
+                                ).length
+                              }
+                            </h6>
+                          </div>
+                        </div>
+                        <div className="d-flex align-items-start">
+                          <svg
+                            className="mt-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            viewBox="0 0 24 24"
+                            fill="red"
+                          >
+                            <g>
+                              <circle cx="12" cy="12" r="8" fill="red"></circle>
+                            </g>
+                          </svg>
+                          <div className="ms-3">
+                            <span className="text-secondary">
+                              Công việc chưa hoàn thành
+                            </span>
+                            <h6>
+                              {
+                                allTasks.filter(
+                                  (task) =>
+                                    task.editorId === editor.accountId &&
+                                    task.status === "UnFinished"
+                                ).length
+                              }
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Row>
+      )}
       {user_info.role.roleId === 5 && <Row>Thống kê</Row>}
     </>
   );

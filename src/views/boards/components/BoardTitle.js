@@ -1,7 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import "moment/locale/vi";
+import topHeader from "../../../assets/images/dashboard/top-header.png";
+import { toast } from "react-toastify";
+import userApi from "../../../api/UserApi";
 
 export const BoardTitle = ({
   title,
@@ -11,6 +15,20 @@ export const BoardTitle = ({
   addition,
   settingType,
 }) => {
+  const [editor, setEditor] = useState();
+  const getEditor = async () => {
+    try {
+      const param = { id: managerId };
+      const response = await userApi.getById(param);
+      setEditor(response);
+      console.log(response);
+    } catch (e) {
+      toast.error(e);
+    }
+  };
+  useEffect(() => {
+    getEditor();
+  }, []);
   return (
     <div
       role="button"
@@ -19,17 +37,11 @@ export const BoardTitle = ({
       onClick={() => handleBoardClick()}
       style={{
         height: "8rem",
-        background:
-          !addition &&
-          (settingType === "Delete"
-            ? `linear-gradient(to right,#FE0944,#FEAE96)`
-            : settingType === "Renamed"
-            ? `linear-gradient(to right,#009FFD,#2A2A72)`
-            : settingType === "None"
-            ? `linear-gradient(to right,#D65BCA,#1FD1F9)`
-            : `linear-gradient(to right,#D65BCA,#1FD1F9)`),
+        backgroundImage:
+          !addition && settingType !== "None" && `url(${topHeader})`,
+        backgroundSize: "800px 1000px",
       }}
-      className={`title rounded p-3 font-weight-bold mb-2  ${
+      className={`title rounded p-3 font-weight-bold mb-2 ${
         addition
           ? `bg-secondary text-white d-flex justify-content-between`
           : `bg-opacity-25 text-white`
@@ -38,14 +50,20 @@ export const BoardTitle = ({
       <div className={addition ? "m-auto" : ""}>
         {addition && <i className="fa fa-plus"></i>}{" "}
         <span
-          className={`h3 ${addition ? "" : "d-flex justify-content-between"}`}
+          className={`h4 ${addition ? "" : "d-flex justify-content-between"}`}
         >
-          <span>{title}</span>
+          <span className="text-white">{title}</span>
         </span>
         {!addition && (
           <>
-            <div className="h6 text-white">
-              {moment(date).format("MMM Do YYYY")}
+            <div className="h6 text-white position-relative">
+              <div className="mb-4">
+                Ngày tạo: {moment(date).format("DD-MM-YYYY")}
+              </div>
+              <div>
+                Quản lí:{" "}
+                {editor && editor.accountInfo && editor.accountInfo.username}
+              </div>
             </div>
           </>
         )}

@@ -1,31 +1,21 @@
+/* eslint-disable array-callback-return */
 import { Droppable } from "react-beautiful-dnd";
 import ListItem from "./ListItem";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Badge,
-  Button,
-  Col,
-  FormGroup,
-  Label,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Row,
-} from "reactstrap";
 import { toast } from "react-toastify";
 import { DatetimePickerTrigger } from "rc-datetime-picker";
 import * as moment from "moment";
-import { Markup } from "interweave";
 import Select from "react-select";
 import { useRanger } from "react-ranger";
 import categoryApi from "../../../../api/categoryApi";
 import taskApi from "../../../../api/TaskApi";
 import userApi from "../../../../api/UserApi";
 import reportApi from "../../../../api/reportApi";
-const MIN_LENGTH_DESCRIPTION = 10;
-const MAX_LENGTH_DESCRIPTION = 300;
+import { Badge, Label } from "reactstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import ApprovedReportTable from "../../../tables/Report/ApprovedReportTable";
+
 export const Track = styled("div")`
   display: inline-block;
   height: 8px;
@@ -33,7 +23,6 @@ export const Track = styled("div")`
   margin: 5% 1% 10% 1%;
   padding-top: 0.25rem;
 `;
-
 export const Tick = styled.div`
   :before {
     content: "";
@@ -82,7 +71,6 @@ export const Checkbutton = styled.button`
   border: none;
   background-color: transparent;
 `;
-
 export const TickLabel = styled.div`
   position: absolute;
   font-size: 0.6rem;
@@ -91,7 +79,6 @@ export const TickLabel = styled.div`
   transform: translate(-50%, 1.2rem);
   white-space: nowrap;
 `;
-
 export const Segment = styled.div`
   background: ${(props) =>
     props.index === 0
@@ -103,7 +90,6 @@ export const Segment = styled.div`
       : "#ff6050"};
   height: 100%;
 `;
-
 export const Handle = styled.div`
   background: #ff1a6b;
   display: flex;
@@ -124,23 +110,24 @@ const ColumnHeader = styled.div`
   text-transform: uppercase;
   margin-top: 10px;
   margin-bottom: 0.5rem;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
+  font-family: "Times New Roman", Times, serif;
 `;
 const StatusColumn = styled.div`
   max-height: 80vh;
   height: 80vh;
   padding: 5px;
   border-radius: 5px;
-  background: #ebe8e8;
-  box-shadow: 0px 0px 3px #ebe8e8;
+  background: #ededed;
+  box-shadow: 0px 0px 3px #ededed;
 `;
 const DroppableStyles = styled.div`
   max-height: 75vh;
   overflow: auto;
   border-radius: 5px;
-  background: #ebe8e8;
-  box-shadow: 0px 0px 3px #ebe8e8;
+  background: #ededed;
+  box-shadow: 0px 0px 3px #ededed;
 `;
 const CreateTaskButton = styled.div`
   width: 100%;
@@ -171,61 +158,25 @@ export const statusName = (status) => {
       return "Đã hoàn thành";
     case "UnFinished":
       return "Chưa xong";
+    default:
+      return "";
   }
 };
-export const columns = [
-  {
-    key: "index",
-    label: "STT",
-    filter: false,
-    sorter: false,
-    _style: { width: "2%" },
-    _props: { className: "fw-semibold" },
-  },
-  {
-    key: "location",
-    label: "Vị trí",
-    _style: { width: "20%" },
-    _props: { className: "fw-semibold" },
-  },
-  {
-    key: "description",
-    label: "Nội dung",
-    _style: { width: "20%" },
-    _props: { className: "fw-semibold" },
-  },
-  {
-    key: "show_details",
-    label: "Chi tiết",
-    _style: { width: "10%" },
-    filter: false,
-    sorter: false,
-    _props: { className: "fw-semibold" },
-  },
-];
-
 const shortcuts = {
   Today: moment(),
   Yesterday: moment().subtract(1, "days"),
   Clear: "",
 };
 const DraggableTask = ({ prefix, tasks, id, loadTask }) => {
-  const [visibleModal, setVisibleModal] = useState(false);
-  const [visibleModal2, setVisibleModal2] = useState(false);
-  const [visibleModal3, setVisibleModal3] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
   //data
   const [selected, setSelected] = useState("");
   const [time, setTime] = useState(moment());
-  const [reportIdList, setReportIdList] = useState([]);
+  const [reportSelectedList, setReportSelectedList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
-  //
-  const [reports, setReports] = useState();
-  const [details, setDetails] = useState(null);
   const [editors, setEditors] = useState([]);
-  const [editedDescription, setEditedDescription] = useState(null);
   //
   const [description, setDescription] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   //
   const [values, setValues] = useState([50]);
   const { getTrackProps, ticks, segments, handles } = useRanger({
@@ -295,422 +246,176 @@ const DraggableTask = ({ prefix, tasks, id, loadTask }) => {
       toast.error(e.message);
     }
   }
-  async function loadReports() {
-    try {
-      const params = { status: 3 };
-      const response = await reportApi.getByStatus(params);
-      //Lọc báo cáo đã được viết thành bài
-      setReports(response.filter((report) => report.editorId === null));
-    } catch (e) {
-      toast.error(e.message);
-    }
-  }
-  const toggleDetails = async (id) => {
-    setVisibleModal3(!visibleModal3);
-    try {
-      const params = { id: id };
-      const response = await reportApi.find(params);
-      const metaDescription = JSON.stringify(response.description)
-        .replace(
-          "<img",
-          '<img style="width:55rem;height:30rem;padding-left:2rem;padding-right:2rem"'
-        )
-        .replace(
-          "<iframe",
-          '<iframe style="width:55rem;height:30rem;padding-left:2rem;padding-right:2rem"'
-        )
-        .replace(/\\/g, "");
-      const description = metaDescription.substring(
-        1,
-        metaDescription.length - 1
-      );
-      setEditedDescription(description);
-      setDetails(response);
-    } catch (e) {
-      toast.error(e.message);
-    }
-  };
   //Tao task
   const createTask = async () => {
-    setIsLoading(true);
     try {
       const params = {
         editorId: selected.value,
         deadLineTime: time.format("YYYY-MM-DD HH:mm:ss"),
         description: description,
-        reportId: reportIdList,
+        reportId: reportSelectedList,
         boardId: id,
       };
-      reportIdList.map(async (reportId) => {
+      reportSelectedList.map(async (reportId) => {
         const params = { reportID: reportId, editorID: selected.value };
         console.log(params);
-        const response = await reportApi.updateReportEditor(params);
+        await reportApi.updateReportEditor(params);
       });
+      console.log(params);
       const response = await taskApi.create(params);
       if (JSON.stringify(response).includes("taskId")) {
-        setVisibleModal(false);
         setEditors([]);
-        setIsLoading(false);
         setDescription("");
-        setReportIdList([]);
+        setReportSelectedList([]);
         loadTask();
-        // window.location.reload();
+        setTime(moment());
+        setSelected("");
+        setShowCreate(false);
+        toast.success("Tạo công việc thành công");
       } else {
-        setVisibleModal(false);
         setEditors([]);
-        setIsLoading(false);
         setDescription("");
-        setReportIdList([]);
+        setReportSelectedList([]);
+        setShowCreate(false);
+        setTime(moment());
+        setSelected("");
         toast.error("Tạo thất bại");
       }
     } catch (e) {
       toast.error(e.message);
     }
   };
-  const openCreateModalOpen = () => {
-    setVisibleModal(!visibleModal);
+  const handleNewTask = () => {
+    setShowCreate(true);
     loadEditors();
   };
-  const openSelectReport = () => {
-    setVisibleModal2(!visibleModal2);
-    loadReports();
+  const handleCloseCreate = () => {
+    setShowCreate(false);
+    setEditors([]);
+    setReportSelectedList([]);
+    setDescription("");
+    setTime(moment());
+  };
+  const handleTextChange = (e) => {
+    setDescription(e.target.value);
   };
   const handleMoment = (moment) => {
     setTime(moment);
-  };
-  const handleDescription = (e) => {
-    setDescription(e.target.value);
-  };
-  const selectReport = (id) => {
-    reportIdList.push(id);
-    toggleDetails(id);
   };
   useEffect(() => {
     loadCategory();
   }, []);
   return (
     <StatusColumn>
+      <Modal show={showCreate} onHide={handleCloseCreate} centered size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Tạo công việc</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col md={12}>
+              <Row>
+                <Col md="2">
+                  <Label for="file">
+                    <b>
+                      Miêu tả công việc:
+                      <span style={{ color: "red" }}>*</span>
+                    </b>{" "}
+                  </Label>
+                </Col>
+                <Col md="9">
+                  <div className="row pl-3">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlTextarea1"
+                      onChange={(e) => handleTextChange(e)}
+                    >
+                      <Form.Control as="textarea" rows={3} />
+                    </Form.Group>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="2">
+                  <Label for="file">
+                    <b>
+                      Người đảm nhận:<span style={{ color: "red" }}>*</span>
+                    </b>{" "}
+                  </Label>
+                </Col>
+                <Col md="9">
+                  <Select
+                    name="editorId"
+                    // isDisabled={editors.length !== 0}
+                    options={editors}
+                    onChange={(option) => setSelected(option)}
+                    placeholder="Chọn người đảm nhận công việc"
+                    defaultValue={selected}
+                    className="mb-3"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md="2">
+                  <Label for="file">
+                    <b>
+                      Chọn deadline:<span style={{ color: "red" }}>*</span>
+                    </b>{" "}
+                  </Label>
+                </Col>
+                <Col md="10">
+                  <DatetimePickerTrigger
+                    shortcuts={shortcuts}
+                    moment={time}
+                    onChange={handleMoment}
+                    minDate={moment()}
+                    className="mb-3"
+                  >
+                    <Row>
+                      <Col md="6">
+                        <input
+                          className="pt-1 pb-1"
+                          type="text"
+                          value={time.format("YYYY-MM-DD HH:mm")}
+                          readOnly
+                        />
+                      </Col>
+                    </Row>
+                  </DatetimePickerTrigger>
+                </Col>
+              </Row>
+              <ApprovedReportTable
+                setReportSelectedList={setReportSelectedList}
+              />
+            </Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseCreate}>
+            Đóng
+          </Button>
+          <Button variant="primary" onClick={() => createTask()}>
+            Tạo công việc
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <ColumnHeader>
         {statusName(prefix)}{" "}
         {prefix === "Review" && (
-          <Checkbutton onClick={() => autoReviewTask()}>Lọc nhanh</Checkbutton>
+          <Checkbutton onClick={() => autoReviewTask()}>
+            Duyệt nhanh
+          </Checkbutton>
         )}
       </ColumnHeader>
       <DroppableStyles>
-        <Modal
-          isOpen={visibleModal3}
-          toggle={() => (setVisibleModal3(false), setDetails(null))}
-          className=""
-          size="lg"
-          style={{ maxWidth: "1400px", width: "80%" }}
-        >
-          <ModalHeader
-            className="bg-primary"
-            toggle={() => (setVisibleModal3(false), setDetails(null))}
-          >
-            Chi tiết báo cáo
-          </ModalHeader>
-          <>
-            <ModalBody>
-              {details !== null && (
-                <Col md={details === null ? 0 : 12}>
-                  <div className="bg-light text-dark pt-2 pl-2 pr-2 pb-5 border rounded">
-                    <FormGroup row>
-                      <Col md="12">
-                        <Label for="label">
-                          <h4>Chi tiết báo cáo</h4>
-                        </Label>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="location">Địa điểm: </Label>
-                      </Col>
-                      <Col md="9">{details.location}</Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="timeFraud">Thời gian vụ việc: </Label>
-                      </Col>
-                      <Col md="9">{details.timeFraud}</Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="createTime">Thời gian viết: </Label>
-                      </Col>
-                      <Col md="9">{details.createTime}</Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="userId">Người gửi: </Label>
-                      </Col>
-                      <Col md="9">
-                        {details.userId === null ? "Không có" : details.userId}
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="category">Phân loại: </Label>
-                      </Col>
-                      <Col md="9">
-                        {details.categoryId === 1
-                          ? "Khác"
-                          : categoryList.find(
-                              (c) => c.categoryId === details.categoryId
-                            ).subCategory}
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="staffId">Người xác nhận: </Label>
-                      </Col>
-                      <Col md="9">{details.staffId}</Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label for="description">Chi tiết:</Label>
-                      </Col>
-                      <Col md="9">
-                        <Markup
-                          content={editedDescription}
-                          allowAttributes
-                          allowElements
-                        />
-                      </Col>
-                    </FormGroup>
-                    {/* File đính kèm */}
-                    <FormGroup row>
-                      <Col md="12">
-                        <Label for="description">
-                          <b>Ảnh đính kèm: </b>
-                        </Label>
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="12">
-                        <Label for="description">
-                          <b>Video đính kèm: </b>
-                        </Label>
-                      </Col>
-                      {details.reportDetails.length > 0 &&
-                        (details.reportDetails.filter(
-                          (video) => video.type === "Video"
-                        ).length > 0
-                          ? details.reportDetails
-                              .filter((video) => video.type === "Video")
-                              .map((video) => (
-                                <Col md="12">
-                                  {video.media.includes("http") ? (
-                                    <label for="videos">
-                                      <video
-                                        width="400"
-                                        height="150"
-                                        controls
-                                        style={{
-                                          height: "200px",
-                                          objectFit: "contain",
-                                        }}
-                                        autoPlay
-                                        loop
-                                      >
-                                        <source src={video.media} />
-                                      </video>
-                                    </label>
-                                  ) : (
-                                    <span className="text-muted">
-                                      Không có video
-                                    </span>
-                                  )}
-                                </Col>
-                              ))
-                          : "Không có video đính kèm")}
-                    </FormGroup>
-                    <Button
-                      className="float-right"
-                      color="primary"
-                      onClick={() => selectReport(details.reportId)}
-                    >
-                      Chọn báo cáo
-                    </Button>
-                  </div>
-                </Col>
-              )}
-            </ModalBody>
-          </>
-        </Modal>
-        <Modal
-          isOpen={visibleModal2}
-          toggle={() => setVisibleModal2(false)}
-          className=""
-          size="lg"
-          style={{ maxWidth: "1600px", width: "80%" }}
-        >
-          <ModalHeader
-            className="bg-primary"
-            toggle={() => (setVisibleModal2(false), setDetails(null))}
-          >
-            Chọn báo cáo đính kèm
-          </ModalHeader>
-          <>
-            <ModalBody></ModalBody>
-          </>
-        </Modal>
-        <Modal
-          isOpen={visibleModal}
-          toggle={() => (
-            setVisibleModal(false),
-            setDetails(null),
-            setEditors([]),
-            setIsLoading(false)
-          )}
-          className=""
-          size="lg"
-          style={{ maxWidth: "900px", width: "80%" }}
-        >
-          <ModalHeader
-            className="bg-primary"
-            toggle={() => (
-              setVisibleModal(false),
-              setDetails(null),
-              setEditors([]),
-              setIsLoading(false)
-            )}
-          >
-            Tạo công việc
-          </ModalHeader>
-          <>
-            <ModalBody>
-              <Row>
-                <Col md={details === null ? 12 : 0}>
-                  <FormGroup row>
-                    <Col md="2">
-                      <Label for="file">
-                        <b>
-                          Miêu tả công việc:
-                          <span style={{ color: "red" }}>*</span>
-                        </b>{" "}
-                      </Label>
-                    </Col>
-                    <Col md="9">
-                      <div className="row pl-3">Text</div>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="2">
-                      <Label for="file">
-                        <b>
-                          Người đảm nhận:<span style={{ color: "red" }}>*</span>
-                        </b>{" "}
-                      </Label>
-                    </Col>
-                    <Col md="9">
-                      <Select
-                        name="editorId"
-                        // isDisabled={editors.length !== 0}
-                        options={editors}
-                        onChange={(option) => setSelected(option)}
-                        placeholder="Chọn người đảm nhận công việc"
-                        defaultValue={selected}
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="2">
-                      <Label for="file">
-                        <b>
-                          Chọn deadline:<span style={{ color: "red" }}>*</span>
-                        </b>{" "}
-                      </Label>
-                    </Col>
-                    <Col md="10">
-                      <DatetimePickerTrigger
-                        shortcuts={shortcuts}
-                        moment={time}
-                        onChange={handleMoment}
-                        minDate={moment()}
-                      >
-                        <Row>
-                          <Col md="6">
-                            <input
-                              className="pt-1 pb-1"
-                              type="text"
-                              value={time.format("YYYY-MM-DD HH:mm")}
-                              readOnly
-                            />
-                          </Col>
-                          <Col md="6">
-                            <i className="icon-calendar p-2 ml-2 border" />
-                          </Col>
-                        </Row>
-                      </DatetimePickerTrigger>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="2">
-                      <Label for="file">
-                        <b>Báo cáo đính kèm:</b>
-                      </Label>
-                    </Col>
-                    <Col md="10">
-                      <Button
-                        class="btn btn-primary"
-                        color="primary"
-                        onClick={() => openSelectReport()}
-                      >
-                        Chọn báo cáo
-                      </Button>
-                    </Col>
-                    <Col md="12">
-                      <Label for="file">
-                        Đã chọn: {reportIdList.length} báo cáo
-                      </Label>
-                    </Col>
-                    <Col md="12">
-                      <Label for="file">
-                        {reportIdList !== null &&
-                          reportIdList.map((reportId) => (
-                            <div>
-                              <div className="badge badge-success">
-                                {reportId}
-                              </div>
-                            </div>
-                          ))}
-                      </Label>
-                    </Col>
-                  </FormGroup>
-                </Col>
-              </Row>
-            </ModalBody>
-            <ModalFooter>
-              {!isLoading ? (
-                <Button
-                  onClick={() => createTask()}
-                  color="primary"
-                  class="font-weight-bold btn btn-primary"
-                >
-                  Tạo công việc
-                </Button>
-              ) : (
-                <Button class="font-weight-bold btn btn-primary">
-                  <span
-                    class="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>{" "}
-                  Đang tạo công việc
-                </Button>
-              )}
-            </ModalFooter>
-          </>
-        </Modal>
-
         {prefix === "New" && (
-          <CreateTaskButton onClick={() => openCreateModalOpen()}>
+          <CreateTaskButton onClick={() => handleNewTask()}>
             <icon className="fa fa-plus"></icon> Tạo công việc mới
           </CreateTaskButton>
         )}
+        {/* Duyệt nhanh */}
         {prefix === "Review" && (
-          <Row style={{ maxWidth: "16vw", marginLeft: "0.25rem" }}>
+          <Row style={{ maxWidth: "19rem" }}>
             <Col md={12}>
               <Track {...getTrackProps()}>
                 {ticks.map(({ value, getTickProps }) => (
