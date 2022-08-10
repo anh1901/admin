@@ -4,18 +4,6 @@ import { Link } from "react-router-dom";
 import CustomToggle from "../../../dropdowns";
 import { bindActionCreators } from "redux";
 
-//img
-import shapes1 from "../../../../assets/images/shapes/01.png";
-import shapes2 from "../../../../assets/images/shapes/02.png";
-import shapes3 from "../../../../assets/images/shapes/03.png";
-import shapes4 from "../../../../assets/images/shapes/04.png";
-import shapes5 from "../../../../assets/images/shapes/05.png";
-import avatars1 from "../../../../assets/images/avatars/01.png";
-import avatars2 from "../../../../assets/images/avatars/avtar_1.png";
-import avatars3 from "../../../../assets/images/avatars/avtar_2.png";
-import avatars4 from "../../../../assets/images/avatars/avtar_3.png";
-import avatars5 from "../../../../assets/images/avatars/avtar_4.png";
-import avatars6 from "../../../../assets/images/avatars/avtar_5.png";
 // logo
 import Logo from "../../components/logo";
 // store
@@ -192,7 +180,7 @@ const Header = (props) => {
                         <div className="d-flex align-items-center">
                           <img
                             className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                            src={shapes1}
+                            src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                             alt=""
                           />
                           <div className="ms-3 w-100">
@@ -211,7 +199,7 @@ const Header = (props) => {
                           <div className="">
                             <img
                               className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                              src={shapes2}
+                              src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                               alt=""
                             />
                           </div>
@@ -230,7 +218,7 @@ const Header = (props) => {
                         <div className="d-flex align-items-center">
                           <img
                             className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                            src={shapes3}
+                            src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                             alt=""
                           />
                           <div className="ms-3 w-100">
@@ -248,7 +236,7 @@ const Header = (props) => {
                         <div className="d-flex align-items-center">
                           <img
                             className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                            src={shapes4}
+                            src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                             alt=""
                           />
                           <div className="w-100 ms-3">
@@ -310,7 +298,7 @@ const Header = (props) => {
                           <div>
                             <img
                               className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                              src={shapes1}
+                              src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                               alt=""
                             />
                           </div>
@@ -327,7 +315,7 @@ const Header = (props) => {
                           <div>
                             <img
                               className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                              src={shapes2}
+                              src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                               alt=""
                             />
                           </div>
@@ -344,7 +332,7 @@ const Header = (props) => {
                           <div>
                             <img
                               className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                              src={shapes3}
+                              src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                               alt=""
                             />
                           </div>
@@ -361,7 +349,7 @@ const Header = (props) => {
                           <div>
                             <img
                               className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                              src={shapes4}
+                              src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                               alt=""
                             />
                           </div>
@@ -378,7 +366,7 @@ const Header = (props) => {
                           <div>
                             <img
                               className="p-1 avatar-40 rounded-pill bg-soft-primary"
-                              src={shapes5}
+                              src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                               alt=""
                             />
                           </div>
@@ -405,32 +393,32 @@ const Header = (props) => {
                   aria-expanded="false"
                 >
                   <img
-                    src={avatars1}
+                    src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                     alt="User-Profile"
                     className="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded"
                   />
                   <img
-                    src={avatars2}
+                    src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                     alt="User-Profile"
                     className="theme-color-purple-img img-fluid avatar avatar-50 avatar-rounded"
                   />
                   <img
-                    src={avatars3}
+                    src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                     alt="User-Profile"
                     className="theme-color-blue-img img-fluid avatar avatar-50 avatar-rounded"
                   />
                   <img
-                    src={avatars5}
+                    src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                     alt="User-Profile"
                     className="theme-color-green-img img-fluid avatar avatar-50 avatar-rounded"
                   />
                   <img
-                    src={avatars6}
+                    src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                     alt="User-Profile"
                     className="theme-color-yellow-img img-fluid avatar avatar-50 avatar-rounded"
                   />
                   <img
-                    src={avatars4}
+                    src="https://i.pinimg.com/originals/34/60/3c/34603ce8a80b1ce9a768cad7ebf63c56.jpg"
                     alt="User-Profile"
                     className="theme-color-pink-img img-fluid avatar avatar-50 avatar-rounded"
                   />
