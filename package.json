@@ -2,7 +2,7 @@
   "name": "report_24h",
   "version": "1.0.1",
   "private": true,
-  "homepage": "https://anh1901.github.io/admin"
+  "homepage": "https://anh1901.github.io/admin",
   "engines": {
     "node": "14.15.5",
     "npm": "6.14.11"
