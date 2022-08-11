@@ -2,7 +2,6 @@
   "name": "report_24h",
   "version": "1.0.1",
   "private": true,
-  "homepage": "https://anh1901.github.io/admin",
   "engines": {
     "node": "14.15.5",
     "npm": "6.14.11"
@@ -56,8 +55,6 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-	"predeploy": "npm run build",
-	"deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts --max_old_space_size=8192 build",
     "test": "react-scripts test",
