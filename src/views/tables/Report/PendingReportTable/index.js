@@ -168,7 +168,7 @@ const PendingReportTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết báo cáo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedReport && (
@@ -312,7 +312,7 @@ const PendingReportTable = () => {
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -329,7 +329,7 @@ const PendingReportTable = () => {
         size="md"
       >
         <Modal.Header>Chọn danh mục</Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <Form.Select size="sm" onChange={(e) => handleCategoryChange(e)}>
             <option>Chọn danh mục</option>
             {categories.map((category) => (
@@ -372,6 +372,7 @@ const PendingReportTable = () => {
           },
         ]}
         options={{
+          pageSize: 10,
           actionsColumnIndex: -1,
           exportButton: true,
           headerStyle: {

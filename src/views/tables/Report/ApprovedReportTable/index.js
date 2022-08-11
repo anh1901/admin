@@ -148,7 +148,7 @@ const ApprovedReportTable = ({ setReportSelectedList }) => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết báo cáo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedReport && (
@@ -286,7 +286,7 @@ const ApprovedReportTable = ({ setReportSelectedList }) => {
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -317,7 +317,9 @@ const ApprovedReportTable = ({ setReportSelectedList }) => {
           },
         ]}
         options={{
-          selection: true,
+          pageSize: 10,
+          actionsColumnIndex: -1,
+          selection: user_info && user_info.role.roleId === 4 ? true : false,
           exportButton: true,
           headerStyle: {
             backgroundColor: "#1669f0",

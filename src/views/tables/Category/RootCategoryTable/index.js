@@ -133,7 +133,7 @@ const RootCategoryTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết danh mục</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               <Row>
@@ -193,7 +193,7 @@ const RootCategoryTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Tạo danh mục</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Row>
               <Col md="3">
@@ -232,7 +232,7 @@ const RootCategoryTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Xóa danh mục</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">Bạn chắc chắn muốn xóa?</div>
         </Modal.Body>
         <Modal.Footer>
@@ -276,6 +276,11 @@ const RootCategoryTable = () => {
             backgroundColor: "#1669f0",
             color: "#FFF",
           },
+          rowStyle: (rowData) => ({
+            // Check if read or not
+            backgroundColor:
+              rowData.tableData.id % 2 !== 0 ? "lightgray" : "white",
+          }),
         }}
       />
     </div>

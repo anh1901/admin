@@ -91,10 +91,13 @@ const CreateReport = () => {
           (state.selectedCity !== null
             ? ", " +
               state.selectedCity.label +
-              ", " +
-              state.selectedDistrict.label +
-              ", " +
-              state.selectedWard.label
+              (state.selectedDistrict !== null
+                ? ", " +
+                  state.selectedDistrict.label +
+                  (state.selectedWard !== null
+                    ? ", " + state.selectedWard.label
+                    : "")
+                : "")
             : ""),
         timeFraud: moment(time).format("YYYY-MM-DD HH:mm:ss"),
         description: text,

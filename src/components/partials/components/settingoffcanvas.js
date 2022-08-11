@@ -680,16 +680,16 @@ const SettingOffcanvas = (props) => {
               <div className="grid-cols-2 mb-4 d-grid gap-x-3">
                 <div
                   className={`${
-                    props.sidebarcolorMode === "dark" ? "active" : ""
+                    props.sidebarcolorMode === "white" ? "active" : ""
                   } btn btn-border mb-4 `}
                   onClick={() => {
-                    props.SidebarColorAction("dark");
+                    props.SidebarColorAction("white");
                   }}
                   checked={props.sidebarcolorMode}
                   data-active={props.sidebarcolorMode ? "true" : "false"}
                   data-setting="sidebar"
                   data-name="sidebar-color"
-                  data-value="sidebar-dark"
+                  data-value="sidebar-white"
                 >
                   <i className="text-dark">
                     <svg
@@ -698,15 +698,10 @@ const SettingOffcanvas = (props) => {
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="8"
-                        fill="currentColor"
-                      ></circle>
+                      <circle cx="12" cy="12" r="8" fill="white"></circle>
                     </svg>
                   </i>
-                  <span className="ms-2 "> Dark </span>
+                  <span className="ms-2 "> White </span>
                 </div>
                 <div
                   className={`${
@@ -740,16 +735,16 @@ const SettingOffcanvas = (props) => {
                 </div>
                 <div
                   className={`${
-                    props.sidebarcolorMode === "white" ? "active" : ""
+                    props.sidebarcolorMode === "dark" ? "active" : ""
                   } btn btn-border mb-4 `}
                   onClick={() => {
-                    props.SidebarColorAction("white");
+                    props.SidebarColorAction("dark");
                   }}
                   data-setting="sidebar"
                   data-name="sidebar-color"
-                  data-value="sidebar-white"
+                  data-value="sidebar-dark"
                 >
-                  <i className="text-white">
+                  <i className="text-dark">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="18"
@@ -766,7 +761,7 @@ const SettingOffcanvas = (props) => {
                       ></circle>
                     </svg>
                   </i>
-                  <span className="ms-2 "> White </span>
+                  <span className="ms-2 "> Dark </span>
                 </div>
                 <div
                   className={`${

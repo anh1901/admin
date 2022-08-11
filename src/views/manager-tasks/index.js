@@ -71,6 +71,7 @@ function Tasks(props) {
   const [description, setDescription] = useState("");
   const [selected, setSelected] = useState("");
   const [time, setTime] = useState(moment());
+  const [temp, setTemp] = useState(0);
   const id = urlParams.get("id");
   // load tasks
   const loadTask = async () => {
@@ -221,7 +222,6 @@ function Tasks(props) {
       toast.error(e.message);
     }
   }
-  const [temp, setTemp] = useState(0);
 
   const handleClose = () => {
     setShow(false);
@@ -264,7 +264,7 @@ function Tasks(props) {
         <Modal.Header closeButton>
           <Modal.Title>Chú ý</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <span className="font-weight-bold h5">
             Bạn có muốn tạo lại task này?
           </span>
@@ -286,7 +286,7 @@ function Tasks(props) {
         <Modal.Header closeButton>
           <Modal.Title>Tạo lại công việc</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <Row>
             <Col md={12}>
               <Row>

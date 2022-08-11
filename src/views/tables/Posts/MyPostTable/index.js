@@ -198,7 +198,7 @@ const MyPostTable = ({ taskId, setPostShowInTask, setShowInTask }) => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedPost && (
@@ -293,7 +293,7 @@ const MyPostTable = ({ taskId, setPostShowInTask, setShowInTask }) => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedPost && (
@@ -384,7 +384,7 @@ const MyPostTable = ({ taskId, setPostShowInTask, setShowInTask }) => {
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -401,7 +401,7 @@ const MyPostTable = ({ taskId, setPostShowInTask, setShowInTask }) => {
         size="xl"
       >
         <Modal.Header>Chọn công việc để hoàn thành</Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <MyTasksTable
             selectedPostId={selectedPostId}
             setShowInPost={setShow}
@@ -449,6 +449,11 @@ const MyPostTable = ({ taskId, setPostShowInTask, setShowInTask }) => {
             backgroundColor: "#1669f0",
             color: "#FFF",
           },
+          rowStyle: (rowData) => ({
+            // Check if read or not
+            backgroundColor:
+              rowData.tableData.id % 2 !== 0 ? "lightgray" : "white",
+          }),
         }}
       />
     </div>

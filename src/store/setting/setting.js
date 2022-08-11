@@ -123,16 +123,15 @@ export const SidebarColorAction = (value) => {
       .getElementsByTagName("ASIDE")[0]
       .classList.add("sidebar-transparent");
   } else {
-    document.getElementsByTagName("ASIDE")[0].classList.remove("sidebar-dark");
+    document.getElementsByTagName("ASIDE")[0].classList.remove("sidebar-white");
     document.getElementsByTagName("ASIDE")[0].classList.remove("sidebar-color");
     document
       .getElementsByTagName("ASIDE")[0]
       .classList.remove("sidebar-transparent");
-    document.getElementsByTagName("ASIDE")[0].classList.add("sidebar-white");
+    document.getElementsByTagName("ASIDE")[0].classList.add("sidebar-dark");
   }
   return { type: "SIDEBARCOLORMODE", value };
 };
-
 // Action for sidebartypeaction
 export const SidebarminiTypeAction = (value) => {
   sessionStorage.setItem("sidebarminitype-mode", value);
@@ -147,7 +146,6 @@ export const SidebarboxedTypeAction = (value) => {
   return { type: "SIDEBARBOXEDTYPEMODE", value };
 };
 // action for sidebaractivestyle
-
 export const SidebarActiveStyleAction = (value) => {
   sessionStorage.setItem("sidebarstyle-mode", value);
   if (value === "roundedOneSide") {

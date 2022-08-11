@@ -126,7 +126,7 @@ const MyTasksTable = ({
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết báo cáo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {reports &&
@@ -268,7 +268,7 @@ const MyTasksTable = ({
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -285,7 +285,7 @@ const MyTasksTable = ({
         fullscreen={true}
       >
         <Modal.Header>Chọn bài viết</Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <MyPostTable
             taskId={selectedTaskId}
             setPostShowInTask={setPostShow}

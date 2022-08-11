@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Input } from "@mui/material";
 import MaterialTable from "material-table";
@@ -168,7 +169,7 @@ const SubCategoryTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết danh mục</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               <Row>
@@ -222,7 +223,7 @@ const SubCategoryTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Tạo danh mục</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <Container fluid>
             <Row className="pb-2">
               <Col md="3">
@@ -275,7 +276,7 @@ const SubCategoryTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Xóa danh mục</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">Bạn chắc chắn muốn xóa?</div>
         </Modal.Body>
         <Modal.Footer>
@@ -319,6 +320,11 @@ const SubCategoryTable = () => {
             backgroundColor: "#1669f0",
             color: "#FFF",
           },
+          rowStyle: (rowData) => ({
+            // Check if read or not
+            backgroundColor:
+              rowData.tableData.id % 2 !== 0 ? "lightgray" : "white",
+          }),
         }}
       />
     </div>

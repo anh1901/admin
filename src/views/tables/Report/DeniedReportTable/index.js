@@ -118,7 +118,7 @@ const DeniedReportTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết báo cáo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedReport && (
@@ -256,7 +256,7 @@ const DeniedReportTable = () => {
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -283,6 +283,7 @@ const DeniedReportTable = () => {
           },
         ]}
         options={{
+          pageSize: 10,
           actionsColumnIndex: -1,
           exportButton: true,
           headerStyle: {

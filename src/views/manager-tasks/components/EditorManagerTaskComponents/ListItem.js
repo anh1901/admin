@@ -104,8 +104,7 @@ const ListItem = ({ item, index, loadTask }) => {
       reportTasks.map(async (report) => {
         const param = { id: report.reportId };
         const response = await reportApi.find(param);
-        setReports([...reports, response]);
-        console.log(response);
+        setReports((reports) => [...reports, response]);
       });
     } catch (e) {
       toast.error(e.message);
@@ -148,7 +147,7 @@ const ListItem = ({ item, index, loadTask }) => {
           <Modal.Header closeButton>
             <Modal.Title>Chi tiết công việc</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body style={{ color: "black" }}>
             <Row>
               <Col
                 md={
@@ -199,24 +198,33 @@ const ListItem = ({ item, index, loadTask }) => {
                       : taskDetail.subTaskId}
                   </Col>
                 </Row>
-                <Row
-                  style={{
-                    backgroundColor: "lightgray",
-                    marginLeft: 5,
-                    marginRight: 5,
-                    borderRadius: 10,
-                    paddingTop: "1rem",
-                  }}
-                >
-                  <Col md="3">
-                    <Label for="file">
-                      <b style={{ color: "black" }}>Báo cáo đính kèm:</b>
-                    </Label>
-                  </Col>
-                  <Col md="12">
-                    {reports &&
-                      reports.map((report) => (
+                <Col md="3">
+                  <Label for="file">
+                    <b style={{ color: "black" }}>Báo cáo đính kèm:</b>
+                  </Label>
+                </Col>
+                {reports &&
+                  reports.map((report) => (
+                    <Row
+                      style={{
+                        backgroundColor: "lightgray",
+                        marginLeft: 5,
+                        marginRight: 5,
+                        borderRadius: 10,
+                        paddingTop: "1rem",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <Col md="12">
                         <>
+                          <Row className="mb-3">
+                            <Col md="3">
+                              <b>ID:</b>
+                            </Col>
+                            <Col md="9" className="ml-auto">
+                              {report.reportId}
+                            </Col>
+                          </Row>
                           <Row className="mb-3">
                             <Col md="3">
                               <b>Địa điểm:</b>
@@ -262,7 +270,6 @@ const ListItem = ({ item, index, loadTask }) => {
                               <b>Ảnh đính kèm:</b>
                             </Col>
                             <Col md="9" className="ml-auto">
-                              {console.log(report)}
                               {report.reportDetails.length > 0 &&
                               report.reportDetails.filter(
                                 (img) => img.type === "Image"
@@ -333,9 +340,9 @@ const ListItem = ({ item, index, loadTask }) => {
                             </Col>
                           </Row>
                         </>
-                      ))}
-                  </Col>
-                </Row>
+                      </Col>
+                    </Row>
+                  ))}
               </Col>
               {(taskDetail.status === "Review" ||
                 taskDetail.status === "Finish" ||
@@ -452,13 +459,14 @@ const ListItem = ({ item, index, loadTask }) => {
                   whiteSpace: "nowrap",
                   maxWidth: "20rem",
                   overflow: "hidden",
+                  color: "black",
                 }}
               >
                 {item.description}
               </CardHeader>
               <CardBody style={{ padding: "0.5rem" }}>
                 <div className="mb-2">
-                  <b>Hạn chót: </b>{" "}
+                  <b style={{ color: "black" }}>Hạn chót: </b>{" "}
                   <span style={{ textTransform: "capitalize" }}>
                     {moment(item.deadLineTime).format(
                       "dddd, Do MMMM YYYY, h:mm:ss"

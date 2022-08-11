@@ -161,7 +161,7 @@ const UnpublishedPostTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedPost && (
@@ -252,7 +252,7 @@ const UnpublishedPostTable = () => {
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -272,7 +272,7 @@ const UnpublishedPostTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedPost && (
@@ -377,6 +377,11 @@ const UnpublishedPostTable = () => {
             backgroundColor: "#1669f0",
             color: "#FFF",
           },
+          rowStyle: (rowData) => ({
+            // Check if read or not
+            backgroundColor:
+              rowData.tableData.id % 2 !== 0 ? "lightgray" : "white",
+          }),
         }}
       />
     </div>

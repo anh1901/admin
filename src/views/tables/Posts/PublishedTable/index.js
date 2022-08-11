@@ -151,7 +151,7 @@ const PublishedPostTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedPost && (
@@ -242,7 +242,7 @@ const PublishedPostTable = () => {
         centered
         size="xl"
       >
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <img
             src={selectedImg}
             alt="large-img"
@@ -269,6 +269,11 @@ const PublishedPostTable = () => {
             backgroundColor: "#1669f0",
             color: "#FFF",
           },
+          rowStyle: (rowData) => ({
+            // Check if read or not
+            backgroundColor:
+              rowData.tableData.id % 2 !== 0 ? "lightgray" : "white",
+          }),
         }}
       />
     </div>

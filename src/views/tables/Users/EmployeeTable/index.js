@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Chip } from "@mui/material";
 import MaterialTable from "material-table";
@@ -35,7 +36,7 @@ const EmployeeTable = () => {
   const [idcard, setIdcard] = useState("");
   const [specialize, setSpecialize] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const loadUsers = async () => { 
+  const loadUsers = async () => {
     try {
       const params = {};
       const response = await UserApi.getAll(params);
@@ -308,7 +309,7 @@ const EmployeeTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Chi tiết người dùng</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               {selectedUser && (
@@ -475,7 +476,7 @@ const EmployeeTable = () => {
         <Modal.Header closeButton>
           <Modal.Title>Tạo người dùng</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <div className="mm-example-row">
             <Container fluid>
               <>

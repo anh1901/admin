@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 import { Droppable } from "react-beautiful-dnd";
 import ListItem from "./ListItem";
@@ -19,8 +20,8 @@ import ApprovedReportTable from "../../../tables/Report/ApprovedReportTable";
 export const Track = styled("div")`
   display: inline-block;
   height: 8px;
-  width: 100%;
-  margin: 5% 1% 10% 1%;
+  width: 104%;
+  margin: 5% 1% 1% 1%;
   padding-top: 0.25rem;
 `;
 export const Tick = styled.div`
@@ -112,6 +113,7 @@ const ColumnHeader = styled.div`
   margin-bottom: 0.5rem;
   font-size: 16px;
   font-weight: bold;
+  color: black !important;
   font-family: "Times New Roman", Times, serif;
 `;
 const StatusColumn = styled.div`
@@ -175,9 +177,7 @@ const DraggableTask = ({ prefix, tasks, id, loadTask }) => {
   const [reportSelectedList, setReportSelectedList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [editors, setEditors] = useState([]);
-  //
   const [description, setDescription] = useState("");
-  //
   const [values, setValues] = useState([50]);
   const { getTrackProps, ticks, segments, handles } = useRanger({
     min: 0,
@@ -311,7 +311,7 @@ const DraggableTask = ({ prefix, tasks, id, loadTask }) => {
         <Modal.Header closeButton>
           <Modal.Title>Tạo công việc</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ color: "black" }}>
           <Row>
             <Col md={12}>
               <Row>
@@ -410,12 +410,13 @@ const DraggableTask = ({ prefix, tasks, id, loadTask }) => {
       <DroppableStyles>
         {prefix === "New" && (
           <CreateTaskButton onClick={() => handleNewTask()}>
-            <icon className="fa fa-plus"></icon> Tạo công việc mới
+            <icon className="fa fa-plus" style={{ color: "black" }}></icon>{" "}
+            <span style={{ color: "black" }}>Tạo công việc mới</span>
           </CreateTaskButton>
         )}
         {/* Duyệt nhanh */}
         {prefix === "Review" && (
-          <Row style={{ maxWidth: "19rem" }}>
+          <Row style={{ maxWidth: "19rem", paddingLeft: "1rem" }}>
             <Col md={12}>
               <Track {...getTrackProps()}>
                 {ticks.map(({ value, getTickProps }) => (
@@ -462,6 +463,7 @@ const DraggableTask = ({ prefix, tasks, id, loadTask }) => {
                     )
                 )
               )}
+              <EmptyList />
               {provided.placeholder}
             </div>
           )}
